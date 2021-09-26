@@ -1,0 +1,142 @@
+<body>
+
+	<!-- Header -->
+		<div id="header">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+					  <li class="active"><a href="#">Lecturer</a></li>
+						<li><a href="#">Homepage</a></li>
+						<li><a href="#">Log In</a></li>
+						<li><a href="#">Sign Up</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="container" style="height: 180px">
+				<div style="position: absolute; z-index: 399; top: 300px;">
+				  <img src="{{data.userSeached.image}}" class="img-avatar userImage" alt="">
+				  <div ></div>
+				</div>
+			</div>
+		</div>
+	<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div class="container pt-5">
+				<div class="row pt-5">
+				  
+				  <!-- User Information -->
+					<div class = "col-lg-4">
+					  
+					  <h2 style="color: gray;">{{data.userSeached.firstname}} {{data.userSeached.lastname}}</h2>
+						<span><i>Computer Science & Information Technology</i></span>
+
+							  <h5 class ="mt-5 mb-3"><i>Courses & Duties</i></h5>
+								<ul class="default">
+									<li>INF401-ARTIFICIAL-INTELLIGENCE</li>
+									<li>INF205-INTRODUCTION-TO-PROGRAMMING</li>
+									<li>INF302-UNIX-OPERATION-SYSTEMS</li>
+									<li>INF303-PROFESSIONAL-COMPUTING</li>
+									<li>INF108-NETWORK-SECURITIES</li>
+									<li>INF402-DATABASE</li>
+									<li>INF405-E-COMMERCE</li>
+									<li>INF301-DISCRETE-MATHEMATICS</li>
+									<li>INF201-MATHEMATICS-AND-STATISTICS</li>
+									<li>INF102-INFORMATION-SYSTEMS</li>
+								</ul>
+					</div>
+					
+					<!-- Content -->
+					<div class ="col-lg-8">
+						<div class = "col-lg-12">
+							<header>
+								<span class="byline">INSTRUCTION TO STUDENTS AND OTHER INTERESTED ENTITIES</span>
+							</header>
+							<p>All students are expected to download and read every course material posted here. The name of each course material for the various courses begins with the course code, the course name and the chapter or sequence of the course material in respective order, eg, INF302-INTRODUCTION-TO-PROGRAMMING-LEC5. </p>
+							<p>The course materials may include Portable Document Files, Powerpoint Slides, Excel and Word Documents, Videos, Audios, Pictures, and other portable file formats. Again, all students are suppose to download and read these course materials. If there is any problem or an issue with the above stated instruction, please contact the repective lecturer or instructor for further clarification. Thank you. </p>
+						</div>
+						
+						<div class = "col-lg-12">
+						  <div class ="row">
+                
+                <!--Videos-->
+                <div class="container mb-3">
+                  <div class="text-muted ml-3 mt-2 byline">Videos</div>
+                  <hr class="m-0 p-3"/>
+                  <div class = "row">
+                    
+                    <div *ngFor = "let eachData of data.userDocs.videos" class="col-lg-4 col-md-4 mt-0">
+                      <div class="card border-0">
+                        <div class="callout callout-info m-0 py-1 px-2 text-muted bg-light">
+                          <div class="float-left my-1"><small>{{eachData.shortFileName}}</small></div>
+                          <div class = "wp-30 hp-30 rounded-circle text-center text-white py-1 float-right" id="download-botton-document">
+                            <i class = "fa fa-download"></i>
+                          </div>
+                          <div class="float-right my-1"><small>{{eachData.fileSize}} &nbsp; </small></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+                
+              <!--Pictures-->
+                <div class="container mb-3">
+                  <div class="text-muted ml-3 mt-2 byline">Pictures</div>
+                  <hr class="m-0 p-3"/>
+                  <div class = "row">
+                    
+                    <div *ngFor = "let eachData of data.userDocs.pictures" class="col-lg-6 col-md-6 mt-0">
+                      <div class="card border-0">
+                        <img src="{{eachData.image}}" class="rounded-top" alt="" style="width: 100%">
+                        <div class="callout callout-info m-0 py-1 px-2 text-muted bg-light">
+                          <div class="float-left my-1"><small>{{eachData.shortFileName}}</small></div>
+                          <div class = "wp-30 hp-30 rounded-circle text-center text-white py-1 float-right" id="download-botton-document">
+                            <i class = "fa fa-download"></i>
+                          </div>
+                          <div class="float-right my-1"><small>{{eachData.fileSize}} &nbsp; </small></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+						  </div>
+						  
+						</div>
+						
+						
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+	
+	<!-- Tweet -->
+		<div id="tweet">
+			<div class="container" style="height: 200px">
+		    <div class="mb-4" style="height: 180px; overflow: scroll; position: relative">
+				  <div *ngFor = "let eachData of data.usersDetail;" >
+				    <div class = "usersClick" (click)="userClick(eachData)">
+				      <img src="{{eachData.image}}" class="img-avatar usersList float-left mr-2 mb-2 " style="width:180px; heigth:180px">
+				    </div>
+				  </div>
+				</div>
+				
+				<div style="clear: both; color:white">
+				  <div><i class="text-white display-6">&ldquo;Wishing You All The Best Of Luck&rdquo;</i></div>
+				</div>
+				
+			</div>
+		</div>
+	<!-- /Tweet -->
+	
+
+
+
+</body>

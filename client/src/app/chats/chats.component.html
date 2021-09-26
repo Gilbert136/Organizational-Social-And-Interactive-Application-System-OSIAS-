@@ -1,0 +1,238 @@
+<div class = "bg-white">
+  <tabset>
+    <tab>
+      <ng-template tabHeading><i class="icon-speech"></i></ng-template>
+      <!--<div class="callout m-0 py-2 text-muted bg-light text-uppercase">
+        <label class="switch switch-text switch-pill switch-primary switch-sm float-right">
+          <input type="checkbox" class="switch-input" checked>
+          <span class="switch-label" data-on="On" data-off="Off"></span>
+          <span class="switch-handle"></span>
+        </label>
+        <small><b>Status</b></small>
+      </div>
+      -->
+      <hr class="mx-3 my-0">
+      <div class ="mx-2">
+      <div class ="usersContent py-2">
+        <div [ngStyle]="usersWidth" class="d-flex" >
+          <div *ngFor = "let eachData of usersList" >
+            <div class="avatar avatar-md pointer mr-1" data-toggle="tooltip" title="{{eachData.username}}">
+              <img src="{{eachData.image}}" class="img-avatar" alt={{eachData.username}} (click)="startChat(eachData)">
+              <div *ngIf = "eachData.userstatus == 'online'"><div class="bg-success status"></div></div>
+              <div *ngIf = "eachData.chatNotice"><div class="bg-danger notice"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <hr class="mx-3 my-0">
+      <div class="text-center my-1">
+        <div class="avatar avatar-xs">
+          <img *ngIf = "chatWith.image; else assetImage" src= {{chatWith.image}} class="img-avatar" alt={{chatWith.username}}>
+        </div>
+        <small class = "text-muted">&nbsp; <i>{{chatWith.username || 'Nobody'}} chatting with</i> &nbsp;</small>
+        <div class="avatar avatar-xs">
+          <img src="{{flowData.image}}" class="img-avatar" alt={{flowData.username}}>
+          <ng-template #assetImage>
+            <img  src= "assets/dummy/img/faceless.jpg" class="img-avatar" alt="Nobody">
+          </ng-template>
+        </div>
+      </div>
+      <hr class="mx-3 my-0">
+      <div id="chatsContent" class="callout py-1" (scroll)="onScroll($event)" #chatsContent [scrollTop]="chatsContent.scrollHeight">
+        <div *ngFor = "let eachData of chatWith.chat">
+          
+          <!--sent chats-->
+          <div *ngIf = "eachData['sender'] == flowData._id; else dothis" class = "bubble rounded my-2 text-right">
+            
+            <!--Text-->
+            <div *ngIf = "eachData['type'] == 'text'" class = "bubble-chat-right animated fadeIn">
+              <div class="m-0 px-2 py-1 text-white"><i>{{eachData.content}}</i></div>
+            </div>
+            
+            <!--Picture-->
+            <div *ngIf = "eachData['type'] == 'picture'" class = "bubble-chat-right animated fadeIn">
+              <!--<div class = "wp-30 hp-30 mt-1 mr-1 rounded-circle text-center text-white py-1" id="download-botton-chat"-->
+              <!--(click)="downloadImage(eachData.fileName, 'chat')"><i class = "fa fa-download" ></i></div>-->
+              
+              <img src="{{eachData['image']}}"  alt="{{eachData.fileName}}" class="my-0 mx-0 rounded" style="width: 100%">
+
+              <div class="d-flex justify-content-center text-white m-1">
+                <div style="background-color:#212529" class="rounded ml-1 px-1"><small><i>{{eachData.fileSize}}</i></small></div>
+                <div style="background-color:#212529" class="rounded ml-1 px-1"><small><i>{{eachData.short_fileName}}</i></small></div>
+                <div style="background-color:#212529" class="rounded ml-1 px-1"><i class="fa fa-download"></i></div>
+              </div>
+              
+              <div class="m-0 px-2 pt-1 text-white"><hr class="mx-3 mt-0 mb-0 bg-white"><i>{{eachData.content}}</i></div>
+            </div>
+            
+            <!--Media-->
+            <!--There is no problem with how the media analyse its condition, just that i have not implement it on the recients side-->
+            <div *ngIf = "eachData['type'] == 'video' || eachData['type'] == 'audio' || eachData['type'] == 'document' || eachData['type'] == 'file'" class="px-2 py-1 bubble-chat-right animated fadeIn" style = "width: 100%">
+              <!--video-->
+              <div *ngIf = "eachData['type'] == 'video'" class = "mx-1 mt-2">
+                <div style = "float:left" class = "mb-2"><div class="text-white"><i class="fa fa-file-movie-o fa-3x"></i></div></div>
+                <div style = "float:right" class = "mb-2 text-white">
+                  <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                  <div style = "float:right">
+                    <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                    <i><small>{{eachData.fileSize}}</small></i>
+                  </div>
+                </div>
+                <div class="p-0 m-0 text-white" style = "clear:both"><hr style="background-color:white" class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+              </div>
+              <!--audio-->
+              <div *ngIf = "eachData['type'] == 'audio'" class = "mx-1 mt-2">
+                <div style = "float:left" class = "mb-2"><div class="text-white"><i class="fa fa-file-audio-o fa-3x"></i></div></div>
+                <div style = "float:right" class = "mb-2 text-white">
+                  <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                  <div style = "float: right">
+                    <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                    <i><small>{{eachData.fileSize}}</small></i>
+                  </div>
+                </div>
+                <div class="p-0 m-0 text-white" style = "clear:both"><hr style="background-color:white" class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+              </div>
+              <!--document-->
+              <div *ngIf = "eachData['type'] == 'document'" class = "mx-1 mt-2">
+                <div style = "float:left" class = "mb-2"><div class="text-white"><i class="fa fa-file-text-o fa-3x"></i></div></div>
+                <div style = "float:right" class = "mb-2 text-white">
+                  <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                  <div style = "float: right">
+                    <i class="fa fa-download" (click)="downloadImage(eachData.fileName, 'chat')"></i>
+                    <i><small>{{eachData.fileSize}}</small></i>
+                  </div>
+                </div>
+                <div class="p-0 m-0 text-white" style = "clear:both"><hr style="background-color:white" class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+              </div>
+              <!--file-->
+              <div *ngIf = "eachData['type'] == 'file'" class = "mx-1 mt-2">
+                <div style = "float:left" class = "mb-2"><div class="text-white"><i class="fa fa-file-file-o fa-3x"></i></div></div>
+                <div style = "float:right" class = "mb-2 text-white">
+                  <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                  <div style = "float: right">
+                    <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                    <i><small>{{eachData.fileSize}}</small></i>
+                  </div>
+                </div>
+                <div class="p-0 m-0 text-white" style = "clear:both"><hr style="background-color:white" class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+              </div>
+            </div>
+          </div>
+          
+          <!--recieved chats-->
+          <ng-template #dothis>
+            <div class = "rounded my-2 bubble">
+      
+              <!--Text-->
+              <div *ngIf = "eachData['type'] == 'text'" class = "bubble-chat-left animated fadeIn">
+                <div class="m-0 px-2 py-1"><i>{{eachData.content}}</i></div>
+              </div>
+              
+              <!--Picture-->
+              <div *ngIf = "eachData['type'] == 'picture'" class = "bubble-chat-left animated fadeIn">
+                <!--<div class = "wp-30 hp-30 mt-2 mr-2 rounded-circle text-center text-white py-1" id="download-botton-chat"><i class = "fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i></div>-->
+                
+                <img src="{{eachData['image']}}"  alt="{{eachData.fileName}}" class="my-0 mx-0 rounded" style="width: 100%">
+                
+                
+                <div class="d-flex justify-content-center text-white m-1">
+                  <div style="background-color:#212529" class="rounded ml-1 px-1"><small><i>{{eachData.fileSize}}</i></small></div>
+                  <div style="background-color:#212529" class="rounded ml-1 px-1"><small><i>{{eachData.short_fileName}}</i></small></div>
+                  <div style="background-color:#212529" class="rounded ml-1 px-1"><i class="fa fa-download"></i></div>
+                </div>
+                
+                <div class="m-0 px-2 pt-1"><hr class="mx-3 mt-0 mb-0"><i>{{eachData.content}}</i>
+                </div>
+                
+              </div>
+              
+              <!--Media-->
+              <!--There is no problem with how the media analyse its condition, just that i have not implement it on the recients side-->
+              <div *ngIf = "eachData['type'] == 'video' || eachData['type'] == 'audio' || eachData['type'] == 'document' || eachData['type'] == 'file'" class="px-2 py-1 bubble-chat-left animated fadeIn" style = "width: 100%">
+                <!--video-->
+                <div *ngIf = "eachData['type'] == 'video'" class = "mx-1 mt-2">
+                  <div style = "float:left" class = "mb-2"><div class = ""><i class="fa fa-file-movie-o fa-3x"></i></div></div>
+                  <div style = "float:right" class = "mb-2">
+                    <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                    <div style = "float: right">
+                      <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                      <i><small>{{eachData.fileSize}}</small></i>
+                    </div>
+                  </div>
+                  <div class="p-0 m-0" style = "clear:both"><hr class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+                </div>
+                <!--audio-->
+                <div *ngIf = "eachData['type'] == 'audio'" class = "mx-1 mt-2">
+                  <div style = "float:left" class = "mb-2"><div class = ""><i class="fa fa-file-audio-o fa-3x"></i></div></div>
+                  <div style = "float:right" class = "mb-2">
+                    <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                    <div style = "float: right">
+                      <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                      <i><small>{{eachData.fileSize}}</small></i>
+                    </div>
+                  </div>
+                  <div class="p-0 m-0" style = "clear:both"><hr class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+                </div>
+                <!--document-->
+                <div *ngIf = "eachData['type'] == 'document'" class = "mx-1 mt-2">
+                  <div style = "float:left" class = "mb-2"><div class = ""><i class="fa fa-file-text-o fa-3x"></i></div></div>
+                  <div style = "float:right" class = "mb-2">
+                    <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                    <div style = "float: right">
+                      <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                      <i><small>{{eachData.fileSize}}</small></i>
+                    </div>
+                  </div>
+                  <div class="p-0 m-0" style = "clear:both"><hr class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+                </div>
+                <!--file-->
+                <div *ngIf = "eachData['type'] == 'file'" class = "mx-1 mt-2">
+                  <div style = "float:left" class = "mb-2"><div class = ""><i class="fa fa-file-file-o fa-3x"></i></div></div>
+                  <div style = "float:right" class = "mb-2">
+                    <div><i><small>{{eachData.short_fileName}}</small></i></div>
+                    <div style = "float: right">
+                      <i class="fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i>
+                      <i><small>{{eachData.fileSize}}</small></i>
+                    </div>
+                  </div>
+                  <div class="p-0 m-0" style = "clear:both"><hr class="mx-3 mb-2"><i>{{eachData.content}}</i></div>
+                </div>
+              </div>
+            
+              
+            </div>
+          </ng-template>
+          
+        </div>
+        
+        <!--typing-->
+        <div *ngIf = "typing">
+          <div class = "rounded my-2 bubble">
+            <div class = "bubble-chat-left animated fadeIn">
+              <div class="m-0 px-2 py-1"><i>{{'Typing...'}}</i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--Chat-Inputs-->
+      <div class="m-2">
+        <div *ngIf = "fileProblem" >
+          <div class = "alert alert-warning mb-2 p-1">{{fileProblem}}</div>
+        </div>
+        <div class="progress progress-xs">
+          <div class="progress-bar bg-primary" role="progressbar" [ngStyle]="progStyle" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="input-group">
+          <input [disabled] = "chatInputs" #dataChat type="text" class="form-control" (keyup.enter)="chatData(dataChat.value); dataChat.value=''" placeholder ="Chat here..." (keyup)="chatTyping(dataChat.value)" >
+          <div class="input-group-btn">
+            <button [hidden] = "chatInputs" class="form-control btn btn-outline-primary p-0" type="button"><ng4-files-click (filesSelect)="filesSelect($event)"><i id="dataButton" class="fa fa-camera px-2"></i></ng4-files-click></button>
+            <button [disabled] = "chatInputs" class="btn btn-primary" type="button" (click)="chatData(dataChat.value); dataChat.value =''"><i class = "fa fa-send"></i></button>
+          </div>
+        </div>
+      </div>
+      <hr class="mx-3 my-0">
+    </tab>
+  </tabset>
+  </div>

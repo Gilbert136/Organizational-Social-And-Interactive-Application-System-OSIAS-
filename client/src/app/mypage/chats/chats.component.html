@@ -1,0 +1,231 @@
+<div class="animated fadeIn">
+
+  <!--Chat-Status-->
+  <div class="col-md-12 px-2">
+    <div class="card rounded-0 text-muted my-2">
+      <div class ="card-body py-1">
+        <span class = "float-left pt-3"><i class="fa fa-comments"></i> &nbsp;<b>CHAT STATUS</b></span>
+        <span class = "float-right d-flex">
+          <div class="ml-1">
+            <div><small><b class="text-muted">{{userData.userstatus}}</b></small></div>
+            <label class="switch switch-text switch-pill switch-primary switch-sm">
+              <input type="checkbox" class="switch-input" checked (click)="userStatus($event)">
+              <span class="switch-label" data-on="On" data-off="Off"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <!--Chat-Users-->
+  <div class="col-md-12 px-2">
+    <div class="card rounded-0 my-2">
+      <div class ="card-body py-2">
+        <div class="usersContent">
+          <div [ngStyle]="usersWidth" class="d-flex" style="height:40px">
+            <div *ngFor="let eachData of usersList" >
+              <div class="avatar avatar-md pointer mr-1" (click)="startChat(eachData)" data-toggle="tooltip" title="{{eachData.username}}">
+                <img src="{{eachData.image}}" class="img-avatar">
+                <div *ngIf="eachData.userstatus=='online'"><div class="bg-success status"></div></div>
+                <div *ngIf="eachData.chatNotice"><div class="bg-danger notice"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--chat-section-->
+  <div class="col-12 px-2">
+    <div class="py-2 bg-light border border-bottom-0">
+      <div class="d-flex justify-content-between">
+        <div class="pointer">
+          <div [hidden]="chatInputs" (click)="previous()" class="px-3">
+            <i class="fa fa-arrow-left"></i>
+            <span class="d-sm-down-none">&nbsp; <small><i>Previous</i></small></span>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="avatar avatar-xs"><img *ngIf="chatWith.image; else assetImage" src={{chatWith.image}} class="img-avatar border"></div>
+          <div><small>&nbsp;<i>{{chatWith.username || 'Nobody'}} is {{chatWith.userstatus || 'active'}}</i> &nbsp;</small></div>
+          <div class="avatar avatar-xs"><img src="{{userData.image}}" class="img-avatar">
+            <ng-template #assetImage><img  src= "assets/dummy/img/faceless.jpg" class="img-avatar border"></ng-template>
+          </div>
+        </div>
+        <div class="pointer">
+          <div [hidden]="chatInputs" (click)="bottom()" class="px-3">
+            <span class="d-sm-down-none"><small><i>Bottom</i></small> &nbsp;</span>
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 px-2">
+    <div class="card rounded-0 my-0">
+      <div class="card-body py-0 px-3">
+        
+        <div class="chatContent">
+          <div #chatBox class="chatBox" (scroll)="getAmountScroll($event)">
+            <!--chatConten-->
+            <div *ngFor="let eachData of chatWith.chat">
+              <div *ngIf="eachData['visibility']=='show'">
+                <!--sent-chats-->
+                <div *ngIf="eachData['sender']==userData._id; else dothis" class="my-2 d-flex justify-content-end">
+                  <!--Text-->
+                  <div *ngIf="eachData['type']=='text'" class="bg-primary text-white text-right border bubble animated fadeIn px-3">
+                    <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                    <div class="m-0 py-0">
+                      <i *ngIf="eachData['star']=='star'" class="fa fa-star"></i>&nbsp;
+                      <small>{{eachData.short_date_created || 'just now'}}</small>&nbsp;
+                      <i class="fa fa-check-circle"></i></div>
+                  </div>
+                  <!--Picture-->
+                  <div *ngIf="eachData['type']=='picture'" class="bg-primary text-white text-right border bubble animated fadeIn" style="width:280px">
+                    <!--<div class = "wp-30 hp-30 mt-1 mr-1 rounded-circle text-center text-white py-1" id="download-botton-chat"-->
+                    <!--(click)="downloadImage(eachData.fileName, 'chat')"><i class = "fa fa-download" ></i></div>-->
+                    <div style="height:150px; overflow:hidden"><img src="{{eachData['image']}}" class="m-0" style="width:100%"></div>
+                    
+                    <div class="d-flex justify-content-center text-white my-2">
+                      <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-white">
+                        <small><i>{{eachData.fileSize}}</i></small>
+                      </div>
+                      <div style="width:150px; border-radius:50px; text-transform:uppercase"
+                        class="mr-1 py-1 px-2 bg-transparent border border-white text-truncate text-center"><small>
+                        <i>{{eachData.short_fileName}}</i></small></div>
+                      <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-white pointer"><i class="fa fa-download"></i></div>
+                    </div>
+                    <div class="mx-3 pt-2 pb-0 text-white" style="border-width:1px 0px 0px 0px; border-color:#fff; border-style:solid">
+                      <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                      <div class="m-0 py-0"><small>{{eachData.short_date_created || 'just now'}}</small>&nbsp;
+                        <span *ngIf="eachData._id; else otherCheck"><i class="fa fa-check-circle"></i></span>
+                        <ng-template #otherCheck><i class="fa fa-check"></i></ng-template>
+                      </div>
+                    </div>
+                  </div>
+                  <!--Media-->
+                  <div *ngIf="eachData['type']=='video' || eachData['type']=='audio' || eachData['type']=='document' || eachData['type']=='file'"
+                    class="bg-primary text-white text-right border bubble animated fadeIn" style="width:280px">
+                    <div class="d-flex justify-content-center text-white my-2">
+                      <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-white"><small><i>{{eachData.fileSize}}</i>
+                        </small></div>
+                      <div style="width:150px; border-radius:50px; text-transform:uppercase"
+                        class="mr-1 py-1 px-2 bg-transparent border border-white text-truncate text-center"><small>
+                        <i>{{eachData.short_fileName}}</i></small></div>
+                      <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-white pointer"><i class="fa fa-download"></i></div>
+                    </div>
+                    <div class="mx-3 pt-2 pb-0 text-white" style="border-width:1px 0px 0px 0px; border-color:#fff; border-style:solid">
+                      <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                      <div class="m-0 py-0"><small>{{eachData.short_date_created}}</small>&nbsp;<i class="fa fa-check-circle"></i></div>
+                    </div>
+                  </div>
+                  <!--user-picture-->
+                  <div class="ml-2 avatar avatar-xs dropdown pointer">
+                    <img src={{userData.image}} class="img-avatar border dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                    <div class="dropdown-menu rounded-0" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" (click)="chatOption({_id:eachData['_id'], visibility:'delete'})">Delete</a>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <!--recieved chats-->
+                <ng-template #dothis>
+                  <div class="my-2 d-flex justify-content-start">
+                    <!--user-picture-->
+                    <div class="mr-2 avatar avatar-xs"><img src={{chatWith.image}} class="img-avatar border"></div>
+                    
+                    <!--Text-->
+                    <div *ngIf = "eachData['type'] == 'text'" class="bg-light border bubble animated fadeIn px-3">
+                      <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                      <div class="m-0 py-0"><small>{{eachData.short_date_created}}</small></div>
+                    </div>
+                    
+                    <!--Picture-->
+                    <div *ngIf = "eachData['type'] == 'picture'" class="bg-light border bubble animated fadeIn" style="width:280px">
+                      <!--<div class = "wp-30 hp-30 mt-2 mr-2 rounded-circle text-center text-white py-1" id="download-botton-chat"><i class = "fa fa-download" (click) = "downloadImage(eachData.fileName, 'chat')"></i></div>-->
+                      <div style="height:150px; overflow:hidden"><img src="{{eachData['image']}}" class="m-0" style="width:100%"></div>
+                      
+                      <!--<img src="{{eachData['image']}}" class="m-0" style="width:100%">-->
+                      <div class="d-flex justify-content-center my-2">
+                        <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-dark"><small><i>{{eachData.fileSize}}</i></small></div>
+                        <div style="width:150px; border-radius:50px; text-transform:uppercase"
+                          class="mr-1 py-1 px-2 bg-transparent border border-dark text-truncate text-center"><small>
+                        <i>{{eachData.short_fileName}}</i></small></div>
+                        <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-dark pointer"><i class="fa fa-download"></i></div>
+                      </div>
+                      <div class="mx-3 pt-2 pb-0" style="border-width:1px 0px 0px 0px; border-color:#000; border-style:solid">
+                        <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                        <div class="m-0 py-0"><small>{{eachData.short_date_created}}</small></div>
+                      </div>
+                    </div>
+                    
+                    <!--Media-->
+                    <div *ngIf = "eachData['type'] == 'video' || eachData['type'] == 'audio' || eachData['type'] == 'document' || eachData['type'] == 'file'" class="bg-light border p-2 bubble animated fadeIn" style="width:280px">
+                      
+                      <div class="d-flex justify-content-center my-2">
+                        <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-dark"><small><i>{{eachData.fileSize}}</i></small></div>
+                        <div style="width:150px; border-radius:50px; text-transform:uppercase"
+                          class="mr-1 py-1 px-2 bg-transparent border border-dark text-truncate text-center"><small>
+                          <i>{{eachData.short_fileName}}</i></small></div>
+                        <div style="border-radius:50px" class="mr-1 py-1 px-2 bg-transparent border border-dark pointer"><i class="fa fa-download"></i></div>
+                      </div>
+                      <div class="mx-3 pt-2 pb-0" style="border-width:1px 0px 0px 0px; border-color:#000; border-style:solid">
+                        <div class="m-0 py-1 font-italic">{{eachData.content}}</div>
+                        <div class="m-0 py-0"><small>{{eachData.short_date_created}}</small></div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            
+            <!--typing-->
+            <div *ngIf="typing">
+              <div class = "my-2 d-flex justify-content-start">
+                <!--user-picture-->
+                <div class="mr-2 avatar avatar-xs"><img src={{chatWith.image}} class="img-avatar border"></div>
+                
+                <div class = "bg-light border bubble animated fadeIn px-3">
+                  <div class="m-0 py-1 font-italic">{{'Typing...'}}</div>
+                  <div class="m-0 py-0"><small>{{'Just now'}}</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+       <!--Chat-Inputs-->
+        <div class="mt-2 mb-3 mx-0">
+          
+          
+          <div style="position:absolute; bottom:55px; right:20px" >
+            <div *ngIf="newMessage" (click)="bottom()"><div class="alert alert-primary mb-2 py-1 px-3 rounded-0 font-italic" style="border-radius:50px">{{'new message'}}</div></div>
+            <div *ngIf="response"><div class="alert alert-primary mb-2 py-1 px-3 rounded-0 font-italic text-truncate" style="border-radius:50px; max-width:280px">{{response}}</div></div>
+          </div>
+          
+          <div style="position:absolute; top:5px; right:20px" >
+            <div *ngIf="loading"><div class="alert alert-primary mb-2 py-1 px-3 rounded-0 font-italic" style="border-radius:50px">{{'Loading...'}}</div></div>
+          </div>
+          
+
+          <div class="progress progress-xs">
+            <div class="progress-bar bg-primary" role="progressbar" [ngStyle]="progStyle" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          
+          <div class="d-flex">
+            <input [disabled]="chatInputs" class="form-control rounded-0 border-right-0 border-primary" (keyup)="chatTyping($event)" [(ngModel)]="chatContent"
+              placeholder="Chat here..." type="text">
+            <div [hidden]="chatInputs" class="form-control btn btn-outline-primary p-0 rounded-0 border-left-0" style="width:50px">
+              <ng4-files-click (filesSelect)="filesSelect($event)"><i class="fa fa-camera px-3" style="padding-top:11px"></i></ng4-files-click></div>
+            <button [disabled]="chatInputs" class="btn btn-primary rounded-0" type="button" (click)="chatData()"><i class="fa fa-send"></i></button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

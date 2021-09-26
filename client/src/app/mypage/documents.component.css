@@ -1,0 +1,8 @@
+#download-botton-document{
+  background-color: #212529
+}
+
+#download-botton-document:hover{
+  transition: background-color .2s ease-in;
+  background-color: #20a8d8;
+}

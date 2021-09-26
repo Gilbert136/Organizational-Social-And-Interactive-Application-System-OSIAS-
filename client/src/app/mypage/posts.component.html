@@ -1,0 +1,219 @@
+<div class="animated fadeIn">
+      
+    <!--Filter-Post-->
+    <div class="col-md-12 px-2">
+      <div class="card rounded-0 text-muted my-2 bg-white">
+        <div class ="card-body py-1">
+          <span class = "float-left pt-3"><i class="fa fa-filter"></i> &nbsp;<b>FILTER POST</b></span>
+          <span class = "float-right d-flex">
+            <div class="ml-1">
+              <div><small><b class="text-muted">Depmt</b></small></div>
+              <label class="switch switch-text switch-pill switch-primary switch-sm">
+                <input type="checkbox" class="switch-input" checked (click)="switchSelect($event, 'Department')">
+                <span class="switch-label" data-on="On" data-off="Off"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </div>
+            <div class="ml-1">
+              <div><small><b class="text-muted">Public</b></small></div>
+              <label class="switch switch-text switch-pill switch-primary switch-sm">
+                <input type="checkbox" class="switch-input" checked (click)="switchSelect($event, 'Public')">
+                <span class="switch-label" data-on="On" data-off="Off"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </div>
+            <div class="ml-1">
+              <div><small><b class="text-muted">Private</b></small></div>
+              <label class="switch switch-text switch-pill switch-primary switch-sm">
+                <input type="checkbox" class="switch-input" checked (click)="switchSelect($event, 'Private')">
+                <span class="switch-label" data-on="On" data-off="Off"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!--Post-Input-->
+    <div class="col-12 px-2">
+      <div class="card rounded-0 my-0">
+        <div class="card-body">
+          <div class = "d-flex">
+            <img src="{{userData.image}}" class="img-avatar wp-50 hp-50 border">
+            <div class="p-2"><div><b>@{{userData.username}}</b></div><div><i><small>{{userData.department}}</small></i></div></div>
+          </div>
+          <div class="mt-3">
+            <textarea [(ngModel)]="content" (keypress)="typing('on')" name="content" rows="6" class="form-control bg-light rounded-0"
+              placeholder="Post content here..."></textarea>
+          </div>
+        </div>
+        <div *ngIf="response.errors"><div *ngFor="let error of response.errors" class="alert alert-danger rounded-0">{{error['msg']}}</div></div>
+        <div class="card-body pt-0">
+          <div class="input-group-btn float-right">
+            <button type="button" class="btn btn-primary rounded-0" (click)="post()"><i class="fa fa-send"></i>
+            <span class="d-sm-down-none">&nbsp;Post</span></button>
+          </div>
+          <div class="input-group-btn float-right dropdown" >
+            <button type="button" class="btn btn-outline-primary rounded-0" id="dropdownMenuButton" data-toggle="dropdown" dropdownToggle>
+              <i class="fa fa-tags"></i>&nbsp;{{displayTag}}
+            </button>
+            <div class="dropdown-menu rounded-0" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click) = "mytag('Private')" name= "tag">Private</a>
+              <a class="dropdown-item" (click) = "mytag('Department')" name= "tag">Department</a>
+              <a class="dropdown-item" (click) = "mytag('Public')" name= "tag">Public</a>
+            </div>
+          </div>
+          <div class="float-right">
+            <ng4-files-click (filesSelect)="filesSelect($event)">
+              <span class="form-control btn btn-outline-primary rounded-0"><i class="fa fa-file"></i>&nbsp;{{fileName || "Attachment"}}</span>
+            </ng4-files-click>
+          </div>
+        </div>
+      </div>
+    </div><!--/.col-->
+    
+    <!--display-Typing-->
+    <div class="col-md-12 px-2 animated fadeIn" *ngIf = "typingData.length">
+      <div class="card rounded  mt-2 mb-0">
+        <div class="card-body">
+          <div class="row">
+            <div class ="col-lg-12">
+              <div class = "float-right mb-0"><small>just now</small></div>
+              <div class = "col-md-2 float-left p-0 mb-2">
+                <img src="{{typingData[0]['ownerImage']}}" class="img-avatar wp-50" alt={{typingData[0].ownerPic}}>
+              </div>
+              <div class = "my-2"><b>@{{typingData[0]['owner']}}</b></div>
+              <div class="col-md-10 float-right p-0 text-muted"><i>{{'typing...'}}</i></div>
+            </div>
+            <div class = "col-lg-12">
+              <div class = "float-right mt-3">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--Post-Data-->
+    <div class="col-md-12 px-2">
+      <div *ngIf = "postData">
+        <div class="col-md-12 animated fadeIn px-0" *ngFor="let eachData of postData;">
+          
+          <!--text-Input-->
+          <div *ngIf = "eachData['type'] == 'text'">
+            <div class="card card-body rounded-0 my-2">
+              <div class ="col-12 px-0 mb-0">
+                <div class = "d-flex">
+                  <img src="{{eachData['ownerImage']}}" class="img-avatar wp-50 hp-50 border border-black">
+                  <div class="p-2"><div><b>@{{eachData.owner}}</b></div><div><small><i>{{eachData.department}}</i></small></div></div>
+                </div>
+              </div>
+              <div class="col-12 px-0 my-2 pt-2" style="border-width: 1px 0px 0px 0px; border-color:#f0f3f5; border-style:solid"><i>{{eachData['content']}}</i></div>
+              <div class="col-12 px-0 py-1">
+                <div class="float-right">
+                  <div class="float-right"><small>{{eachData['short_date_created']}}</small></div>
+                  <!-- will have to sit down and do it well
+                  <div class = "d-inline mr-3"><i class="fa fa-thumbs-up mr-1 text-muted"
+                    (click) = "option(1, eachData['_id'])">
+                  </i><span class= "text-muted">{{eachData['liked']}}</span></div>
+                  <div class = "d-inline mr-3"><i class="fa fa-thumbs-down mr-1 text-muted"
+                    (click) = "option(0,eachData['_id'])">
+                  </i><span class= "text-muted">{{eachData['disliked']}}</span></div>
+                  -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!--files-Input-->
+          <div *ngIf = "eachData['type'] == 'video' || eachData['type'] == 'audio' || eachData['type'] == 'document' || eachData['type'] == 'file'">
+            <div class="card card-body rounded-0 my-2">
+              <div class ="col-12 px-0 mb-0">
+                <div class="d-flex">
+                  <img src="{{eachData['ownerImage']}}" class="img-avatar wp-50 hp-50 border">
+                  <div class="p-2"><div><b>@{{eachData.owner}}</b></div><div><small><i>{{eachData.department}}</i></small></div></div>
+                </div>
+              </div>
+              <div class = "col-12 my-2 px-0 py-2" style="border-width:1px 0px; border-color:#f0f3f5; border-style:solid">
+                <div class="d-flex">
+                  <div class="py-1 px-2 border border-dark pointer" style="border-radius:50px" (click)="option(2,eachData['_id'],eachData.fileName)">
+                    <i class="fa fa-download"></i></div>
+                  <div class="py-1 px-2 ml-1 border border-dark" style="border-radius:50px; text-transform:uppercase">
+                    <small><i>{{eachData['short_fileName']}}</i></small>
+                    <!-- will have to sit down and do it well
+                    <span class= "text-muted">{{eachData['downloaded']}}</span>-->
+                    <!-- will have to sit down and do it well
+                    <div class = "d-inline mr-3"><i class="fa fa-thumbs-up mr-1 text-muted"
+                      (click) = "option(1,eachData['_id'])">
+                    </i><span class= "text-muted">{{eachData['liked']}}</span></div>
+                    <div class = "d-inline mr-3"><i class="fa fa-thumbs-down mr-1 text-muted"
+                      (click) = "option(0,eachData['_id'])">
+                    </i><span class= "text-muted">{{eachData['disliked']}}</span></div>
+                    -->
+                  </div>
+                  <div class="py-1 px-2 ml-1 border border-dark" style="border-radius:50px"><small><i>{{eachData['fileSize']}}</i></small></div>
+                </div>
+              </div>
+
+              <div class="col-12 px-0 m-0"><i>{{eachData['content']}}</i></div>
+              
+              <div class="col-12 px-0 py-1">
+                <div class="d-flex justify-content-end">
+                  <div><small>{{eachData['short_date_created']}}</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!--picture-Input-->
+          <div *ngIf = "eachData['type'] == 'picture'">
+            <div class="card rounded-0 bg-light my-2" style = "overflow: hidden" >
+              <img src="{{eachData['image']}}" class="blur-image" alt="{{eachData.fileName}}">
+              <div class= "pic-onTop list-inline"><div class="text-center"><img src="{{eachData['image']}}"></div></div>
+              <div class="card-body bg-white">
+                <div class ="col-12 px-0 mb-0">
+                  <div class = "d-flex">
+                    <img src="{{eachData['ownerImage']}}" class="img-avatar wp-50 hp-50 border">
+                    <div class="p-2"><div><b>@{{eachData.owner}}</b></div><div><small><i>{{eachData.department}}</i></small></div></div>
+                  </div>
+                </div>
+                <div class = "col-12 my-2 px-0 py-2" style="border-width:1px 0px; border-color:#f0f3f5; border-style:solid">
+                  <div class="d-flex">
+                    <div class="py-1 px-2 border border-dark pointer" style="border-radius:50px" (click)="option(2,eachData['_id'],eachData.fileName)">
+                      <i class="fa fa-download"></i></div>
+                    <div class="py-1 px-2 ml-1 border border-dark" style="border-radius:50px; text-transform:uppercase">
+                      <small><i>{{eachData['short_fileName']}}</i></small>
+                      <!-- will have to sit down and do it well
+                      <span class= "text-muted">{{eachData['downloaded']}}</span>-->
+                      <!-- will have to sit down and do it well
+                      <div class = "d-inline mr-3"><i class="fa fa-thumbs-up mr-1 text-muted"
+                        (click) = "option(1,eachData['_id'])">
+                      </i><span class= "text-muted">{{eachData['liked']}}</span></div>
+                      <div class = "d-inline mr-3"><i class="fa fa-thumbs-down mr-1 text-muted"
+                        (click) = "option(0,eachData['_id'])">
+                      </i><span class= "text-muted">{{eachData['disliked']}}</span></div>
+                      -->
+                    </div>
+                    <div class="py-1 px-2 ml-1 border border-dark" style="border-radius:50px"><small><i>{{eachData['fileSize']}}</i></small></div>
+                  </div>
+                </div>
+                <div class="col-12 px-0 m-0"><i>{{eachData['content']}}</i></div>
+                <div class="col-12 px-0 py-1 d-flex justify-content-end"><div><small>{{eachData['short_date_created']}}</small></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-12 px-2">
+      <div class="card-block pb-2 pt-0 px-0 ">
+        <button type="button" class="btn btn-primary rounded-0" (click)="previous()" style="width: 100%">
+          <i class="fa fa-angle-double-right"></i>&nbsp;Previous
+        </button>
+      </div>
+    </div>
+    
+  <!--</div>-->
+</div>

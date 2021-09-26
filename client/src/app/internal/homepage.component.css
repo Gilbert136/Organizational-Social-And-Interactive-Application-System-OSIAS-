@@ -1,0 +1,17 @@
+.masthead{
+  background-image: url("../../assets/agency/img/header-bg.jpg");
+}
+
+.usersClick{
+  cursor: pointer;
+}
+
+.hover-effect:hover{
+  border-radius: 10px;
+  background-color: #f0f3f5;
+}
+
+#contact {
+  background-image: url("../../assets/agency/img/map-image.png");
+ }
+ 

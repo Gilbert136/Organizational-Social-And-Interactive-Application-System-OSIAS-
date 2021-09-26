@@ -1,0 +1,136 @@
+<div class="animated fadeIn">
+    
+    <!--Documents Uploads-->
+    <div class="col-md-12 px-2">
+      <div class = "mt-2">
+        <div class="card rounded-0 text-muted m-0 bg-white">
+          <div class ="card-body pt-2 pb-0">
+            <span class = "float-left pt-2"><i class="fa fa-upload"></i> &nbsp;<b>UPLOADS</b></span>
+            <span class = "float-right">
+              <span class="input-group-btn float-right">
+                <button type="button" class="btn btn-primary rounded-0" (click)="DocSent()"><i class="fa fa-upload"></i>
+                <span class="d-sm-down-none">&nbsp;Upload</span></button>
+              </span>
+          
+              <span class="input-group-btn float-right dropdown" >
+                <button type="button" class="btn btn-outline-primary" id="dropdownMenuButton"  data-toggle="dropdown" dropdownToggle>
+                  <i class="fa fa-tags"></i>&nbsp;{{displayTag}}
+                </button>
+                <div class="dropdown-menu rounded" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click) = "tagSelect('Private')" name= "tag">Private</a>
+                  <a class="dropdown-item" (click) = "tagSelect('Department')" name= "tag">Department</a>
+                  <a class="dropdown-item" (click) = "tagSelect('Public')" name= "tag">Public</a>
+                </div>
+              </span>
+              
+              <span class = "input-group-btn float-right">
+                <ng4-files-click (filesSelect)="filesSelect($event)">
+                  <span class="form-control btn btn-outline-primary rounded-0"><i class="fa fa-file"></i>
+                    <span>&nbsp;<b>{{filePro.short_fileName || "File"}}</b></span>
+                  </span>
+                </ng4-files-click>
+              </span>
+              
+              <span *ngIf = "filePro.fileProblem" class="input-group-btn float-right">
+                <button type="button" class="btn alert alert-warning p-2 border border-white m-0">{{filePro.fileProblem}}</button>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="progress progress-xs m-0">
+          <div class="progress-bar bg-primary" role="progressbar" [ngStyle]="this.filePro.progStyle" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!--Documents Body-->
+    <div class="col-md-12 px-2">
+      <div class="bg-light border mt-2">
+        <tabset>
+          <span class="float-right mr-3 my-2"><small><i class="text-muted">Ordered By Date From Recent</i></small></span>
+          
+          <!--PICTURES-->
+          <tab>
+            <ng-template tabHeading>PICTURES</ng-template>
+              <div class="mb-1" style="clear:both">
+                <div class="row px-1">
+                  <div *ngFor = "let eachData of docs.picture" class="col-lg-6 col-md-6 animated fadeIn">
+                    <div class="card rounded-0 bg-light">
+                      <div style="height:200px; overflow:hidden;"><img src="{{eachData.image}}" style="width:100%"></div>
+                      <div class="m-0 py-1 px-2 text-muted">
+                        <div class="float-left my-1 text-uppercase"><small><b>{{eachData.short_fileName}}</b></small></div>
+                        <div class = "text-white float-right bg-primary px-1 my-1 rounded"><i class="fa fa-download"></i></div>
+                        <div class="float-right my-1 bg-primary px-1 mr-1 rounded"><small><b>{{eachData.fileSize}}</b></small></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--Previous-Button-->
+              <div>
+                <button type="button" class="btn btn-primary rounded" (click)="prevDoc('picture')" style="width:100%">
+                <i class="fa fa-angle-double-left"></i>&nbsp;Previous</button>
+              </div>
+          </tab>
+          
+          <!--VIDEOS-->
+          <tab>
+            <ng-template tabHeading>VIDEOS</ng-template>
+            <div class="mb-1" style="clear:both">
+              <div class="row px-1">
+                <div *ngFor = "let eachData of docs.video" class="col-lg-6 col-md-6 animated fadeIn">
+                  <div class="card rounded-0 bg-light">
+                    <div class="m-0 py-1 px-2 text-muted">
+                      <div class="float-left my-1 text-uppercase"><small><b>{{eachData.short_fileName}}</b></small></div>
+                      <div class = "text-white bg-primary rounded px-1 my-1 float-right"><i class = "fa fa-download"></i></div>
+                      <div class="float-right my-1 bg-primary px-1 mr-1 rounded"><small><b>{{eachData.fileSize}}</b></small></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Previous-Button-->
+            <div class="">
+              <button type="button" class="btn btn-primary rounded" (click)="prevDoc('video')" style="width: 100%">
+                <i class="fa fa-angle-double-right"></i>&nbsp;Previous</button>
+            </div>
+          </tab>
+          
+          <!--AUDIOS-->
+          <tab>
+            <ng-template tabHeading>AUDIOS</ng-template>
+            
+            <!--Previous-Button-->
+            <div class="">
+              <button type="button" class="btn btn-primary rounded" (click)="prevDoc('audio')" style="width: 100%">
+                <i class="fa fa-angle-double-right"></i>&nbsp;Previous</button>
+            </div>
+          </tab>
+          
+          <!--DOCUMENTS-->
+          <tab>
+            <ng-template tabHeading>DOCUMENTS</ng-template>
+            
+            <!--Previous-Button-->
+            <div class="">
+              <button type="button" class="btn btn-primary rounded" (click)="prevDoc('document')" style="width: 100%">
+                <i class="fa fa-angle-double-right"></i>&nbsp;Previous</button>
+            </div>
+          </tab>
+          
+          <!--FILES-->
+          <tab>
+            <ng-template tabHeading> FILES</ng-template>
+            
+            <!--Previous-Button-->
+            <div class="">
+              <button type="button" class="btn btn-primary rounded" (click)="prevDoc('file')" style="width: 100%">
+                <i class="fa fa-angle-double-right"></i>&nbsp;Previous</button>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="app flex-row align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mx-4">
+          <div class="card-body p-4">
+            <h1>Register</h1>
+            <form (submit) = "adduser()" ngNativeValidate>
+              <p class="text-muted">Create your account</p>
+                     
+              <div *ngIf = "resPrint.created" >
+                <div class = "alert alert-success">
+                  {{resPrint.created}}
+                </div>
+              </div>
+              
+              <div *ngIf = "resPrint.exist" >
+                <div class = "alert alert-danger">
+                  {{resPrint.exist}}
+                </div>
+              </div>
+              
+              <div *ngIf = "resPrint.errors;" >
+                <div *ngFor = "let error of resPrint.errors" class = "alert alert-danger">
+                  {{error['msg']}}
+                </div>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                <input type="text" class="form-control" [(ngModel)]="user.username" name="username" placeholder="Username"
+                maxlength="25" minlength="10" required>
+                <span class="input-group-addon p-0">
+                  <span class="mt-2">
+                  <ng4-files-click (filesSelect)="filesSelect($event)">
+                    <span class="p-2">
+                      <i class="fa fa-image"></i>&nbsp; <span class="d-sm-down-none">{{imageName || "Choose..."}}</span>
+                    </span>
+                  </ng4-files-click>
+                  </span>
+                </span>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" [(ngModel)]="user.firstname" name="firstname" placeholder="First Name"
+                maxlength="15" required>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input type="text" class="form-control" [(ngModel)]="user.lastname" name="lastname" placeholder="Last Name"
+                maxlength="25" required>
+              </div>
+  
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input type="email" class="form-control" [(ngModel)]="user.email" name="email" placeholder="Email"
+                maxlength="45" required>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                <input type="number" class="form-control" [(ngModel)] = "user.contact" name="contact" placeholder="Contact"
+                 required>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                <select id="select"  [(ngModel)] = "user.department" name="department" class="form-control">
+                  <option value="{{ eachData }}" *ngFor = "let eachData of departmentList;"> {{ eachData }}</option>
+                </select>
+              </div>
+              
+              <div class="input-group mb-3">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" [(ngModel)]="user.password" name="password" placeholder="Password"
+                minlength="6" maxlength="25" required>
+              </div>
+  
+              <div class="input-group mb-4">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" [(ngModel)]= "user.password2" name="password2" placeholder="Repeat password" minlength="6" maxlength="25" required>
+              </div>
+              
+              <input type="submit" class="btn btn-block btn-success" value="Create Account" >
+              <input type="submit" class="btn btn-block btn-primary" [routerLink]="['/pages/login']" value="Log In" >
+            </form>
+            <div class="text-center mt-2">
+              <a href="#">OSIAS&nbsp;</a>
+              <span class="text-muted">&copy; 2018 &nbsp; Copyrights All Rights Reserve</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

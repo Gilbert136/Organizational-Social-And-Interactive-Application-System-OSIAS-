@@ -1,0 +1,100 @@
+.usersContent{
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.status{
+  width:12px;
+  height:12px;
+  border-radius: 100%;
+  border: white solid 2px;
+  position: absolute;
+  bottom: 0px;
+  right:0px;
+}
+
+.notice{
+  width:12px;
+  height:12px;
+  border-radius: 100%;
+  border: white solid 2px;
+  position: absolute;
+  top: 0px;
+  right:0px;
+}
+
+#chatsContent{
+  width: 100%;
+  height: 390px;
+  overflow-y: scroll;
+}
+
+#dataButton{
+  padding-top: 9px;
+}
+
+#download-botton-chat{
+  position:absolute;
+  right: 2px;
+  background-color: #212529
+}
+
+#download-botton-chat:hover{
+  transition: background-color .2s ease-in;
+  background-color: #20a8d8;
+}
+
+.bubble
+{
+    padding: 0px;
+}
+
+.bubble .bubble-chat-left
+{
+    display: inline-block;
+    background-color: #f0f3f5;
+    padding: 2px;
+    border-radius: 8px;
+    position: relative;
+    border-width: 0px;
+}
+
+.bubble .bubble-chat-left:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -8.5px;
+    top: 7px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #f0f3f5;
+}
+
+.bubble .bubble-chat-right
+{
+    display: inline-block;
+    background-color: #20a8d8;
+    padding: 2px;
+    border-radius: 8px;
+    position: relative;
+    border-width: 0px;
+
+}
+
+.bubble .bubble-chat-right:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -8px;
+    top: 6px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #20a8d8;
+}
+

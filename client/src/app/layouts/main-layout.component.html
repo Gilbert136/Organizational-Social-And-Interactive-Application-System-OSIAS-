@@ -1,0 +1,100 @@
+<span *ngIf = "userDataExit">
+<header class="app-header navbar sticky-top" style='position: sticky' id="header" #header>
+  <!--<a class="navbar-brand"></a>-->
+  <h2 class="text-primary ml-3">OSIAS</h2>
+  <!--<ul class="nav navbar-nav">-->
+  <!--  <li class="nav-item"><a class="nav-link"><i class="fa fa-cubes fa-2x"></i><span class="badge badge-pill badge-danger"></span></a></li>-->
+  <!--  <li class="nav-item"><a class="nav-link"><i class="fa fa-folder fa-2x"></i><span class="badge badge-pill badge-danger"></span></a></li>-->
+  <!--  <li class="nav-item"><a class="nav-link"><i class="fa fa-comments fa-2x"></i><span class="badge badge-pill badge-danger"><i class="fa fa-comments">-->
+  <!--    </i></span></a></li>-->
+  <!--</ul>-->
+  <ul class="nav navbar-nav ml-auto">
+    <span class = "mr-2 py-1 ">
+      <li class="nav-item dropdown" dropdown>
+        <a class="nav-link pointer d-flex" dropdownToggle (click)="false">
+          <div>
+            <div class="d-xs-down-none p-0"><b><i>{{userData.username}}</i></b></div>
+            <div class="d-xs-down-none text-right p-0"><small><i>{{userData.department}}</i></small></div>
+          </div>
+          <img src="{{userData.image}}" class="img-avatar">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right rounded" *dropdownMenu aria-labelledby="simple-dropdown">
+          <div class="dropdown-header text-center"><strong>Account</strong></div>
+          <a class="dropdown-item" [routerLink]="[]"><i class="fa fa-cubes"></i> Posts</a>
+          <a class="dropdown-item" [routerLink]="[]"><i class="fa fa-file"></i> Documents</a>
+          <div class="dropdown-header text-center"><strong>Settings</strong></div>
+          <a class="dropdown-item"><i class="fa fa-cog"></i> Profile</a>
+          <div class="divider"></div>
+          <a class="dropdown-item pointer" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
+        </div>
+      </li>
+    </span>
+  </ul>
+</header>
+
+<div class="d-flex main-body">
+ 
+  <!--Left content-->
+  <div class="main-nav">
+    <div class="bg-white border text-muted rounded-0 my-2 nav-box">
+      <div class="nav-item pointer py-1" [routerLink]="['/'+userData.username+'/posts']" (click)="clickMenu('post')">
+        <div class="nav-link">
+          <!--<div class="badge badge-pill badge-danger notification"><i class="fa fa-cubes"></i></div>-->
+          <i class="fa fa-cubes fa-2x"></i><span class="nav-list"><b>&nbsp; &nbsp;POSTS</b></span>
+        </div>
+      </div>
+      <hr class = "my-0 mx-3"/>
+      <hr class = "my-0 mx-3"/>
+      <div class="nav-item pointer py-1" [routerLink]="['/'+userData.username+'/documents']" (click)="clickMenu('doc')">
+        <div class="nav-link">
+          <!--<div class="badge badge-pill badge-danger notification"><i class="fa fa-folder"></i></div>-->
+          <i class="fa fa-folder fa-2x"></i><span class="nav-list"><b>&nbsp; &nbsp; &nbsp;DOCS</b></span>
+        </div>
+      </div>
+      <hr class = "my-0 mx-3"/>
+      <hr class = "my-0 mx-3"/>
+      <div class="nav-item pointer py-1" [routerLink]="['/'+userData.username+'/chats']" (click)="clickMenu('chat')">
+        <div class="nav-link">
+          <div *ngIf="menu.chat.notice" class="badge badge-pill badge-danger notification"><i class="fa fa-comments"></i></div>
+          <i class="fa fa-comments fa-2x"></i><span class="nav-list"><b> &nbsp; &nbsp; CHATS  </b></span>
+        </div>
+      </div>
+      <hr class = "my-0 mx-3"/>
+    </div>
+  </div>
+  
+   <!--Right content-->
+  <div class="main-content">
+    <div class="col-md-12 px-2 d-block d-sm-none">
+      <div class="text-muted my-2 bg-white border">
+          <div class="p-3" [routerLink]="['/'+userData.username+'/posts']" (click)="clickMenu('post')">
+            <i class="fa fa-cubes fa-2x"></i>
+            <span><b> &nbsp; &nbsp; POSTS  </b></span>
+          </div>
+          
+          <div class="p-3" [routerLink]="['/'+userData.username+'/documents']" (click)="clickMenu('doc')">
+            <i class="fa fa-folder fa-2x"></i><span><b> &nbsp; &nbsp; DOCUMENTS  </b></span>
+          </div>
+          
+          <div class="p-3" [routerLink]="['/'+userData.username+'/chats']" (click)="clickMenu('chat')">
+            <div *ngIf="menu.chat.notice" class="badge badge-pill badge-danger notification"><i class="fa fa-comments"></i></div>
+            <i class="fa fa-comments fa-2x"></i><span><b> &nbsp; &nbsp; CHATS  </b></span>
+          </div>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+  
+<!--<footer class="app-footer" id="footer" #footer>-->
+<!--  <span class="float-left d-sm-down-none text-muted"><i>Powered by <a href="#">Galkade</a></i></span>-->
+<!--  <a href="#">OSIAS&nbsp;</a><span class="text-muted">&copy; 2018 &nbsp; Copyrights All Rights Reserved</span>-->
+<!--  <span class="float-right d-sm-down-none"><i><a href="#">Version</a></i><span class="text-muted">&nbsp; 1.0.0</span></span>-->
+<!--</footer>-->
+</span>
+
+
+
+
+
+
