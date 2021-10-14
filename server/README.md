@@ -1,6 +1,6 @@
 # Node.js Organizational Social And Interactive Application (OSIAS)
 
-This is an internetchat application using Node.js, Express, Passport and Mongoose. 
+This is an internet interactive chat application using Node.js, Express, Passport and Mongoose. 
 
 ### Version
 1.1.0
